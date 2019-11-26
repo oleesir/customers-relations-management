@@ -38,6 +38,6 @@ CREATE TABLE IF NOT EXISTS customers(
 `;
 
 
-export default{
+export default {
   dropTables, dropTypes, createTypes, createTables
 };

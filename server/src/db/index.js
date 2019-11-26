@@ -1,6 +1,7 @@
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
 import getConfig from './config';
+import mapResultToCamelCase from '../utils/mapResultToCamelCase';
 
 
 dotenv.config();
@@ -45,7 +46,8 @@ export default class Model {
 
     try {
       const result = await this.pool.query(query);
-      return result.row;
+
+      return mapResultToCamelCase(result.rows);
     } catch (err) {
       console.log(query, err.message);
     }
@@ -64,9 +66,9 @@ export default class Model {
     console.log(query);
     try {
       const result = await this.pool.query(query);
-      return result.row;
+      return mapResultToCamelCase(result.rows);
     } catch (err) {
-      console.log(err.message);
+      console.log(query, err.message);
     }
   }
 
@@ -84,9 +86,9 @@ export default class Model {
 
     try {
       const result = await this.pool.query(query);
-      return result.row;
+      return mapResultToCamelCase(result.rows);
     } catch (err) {
-      console.log(err.message);
+      console.log(query, err.message);
     }
   }
 
@@ -104,7 +106,7 @@ export default class Model {
 
     try {
       const result = await this.pool.query(query);
-      return result.rows;
+      return mapResultToCamelCase(result.rows);
     } catch (err) {
       console.log(query, err.message);
     }
@@ -124,7 +126,7 @@ export default class Model {
 
     try {
       const result = await this.pool.query(query);
-      return result.rows;
+      return mapResultToCamelCase(result.rows);
     } catch (err) {
       console.log(query, err.message);
     }

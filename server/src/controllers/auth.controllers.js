@@ -2,13 +2,14 @@ import Jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import Encryption from '../utils/encryption';
 import Model from '../db/index';
+import Authorization from '../middleware/Authorization.middlewares';
 
 dotenv.config();
 
 const users = new Model('users');
 
-const { hashPassword } = Encryption;
-
+const { hashPassword, comparePassword } = Encryption;
+const { generateToken } = Authorization;
 
 /**
  * @class AuthController
@@ -50,7 +51,7 @@ export default class AuthController {
       role: newUser.role
     };
 
-    const token = Jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '1day' });
+    const token = generateToken(payload);
 
     delete newUser.password;
 
@@ -64,5 +65,73 @@ export default class AuthController {
       data,
       message: 'User registered successfully'
     });
+  }
+
+
+  /**
+ * @method signin
+ *
+ * @param {object} req
+ * @param {object} res
+ *
+ * @returns {object} status and message
+ */
+  static async signin(req, res) {
+    const { email, password } = req.body;
+
+    const [findUser] = await users.select(['*'], `email = '${email}'`);
+
+    if (!findUser) {
+      return res.status(401)
+        .json({
+          status: 401,
+          message: 'Email or password is incorrect'
+        });
+    }
+
+    if (findUser) {
+      const {
+        id,
+        firstName,
+        lastName,
+        role
+      } = findUser;
+
+      const verifyPassword = comparePassword(password, findUser.password);
+
+      if (!verifyPassword) {
+        return res.status(401).json({
+          status: 401,
+          message: 'Email or password is incorrect'
+
+        });
+      }
+
+      const payload = {
+        id,
+        firstName,
+        lastName,
+        role
+      };
+
+      const token = generateToken(payload);
+
+      const data = {
+        ...payload,
+        token
+      };
+
+      return res.status(200).json({
+        status: 200,
+        data,
+        message: 'Login successful'
+      });
+    }
+
+    return res.status(401)
+      .json({
+        status: 401,
+        message: 'Email or password is incorrect'
+      });
   }
 }

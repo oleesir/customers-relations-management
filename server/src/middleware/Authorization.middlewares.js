@@ -37,4 +37,15 @@ export default class Authorization {
       next();
     });
   }
+
+  /**
+   * @method generateToken
+   *
+   * @param {object} payload
+   *
+   * @returns {string} JWT
+   */
+  static generateToken(payload) {
+    return Jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '1day' });
+  }
 }

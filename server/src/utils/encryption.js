@@ -18,4 +18,16 @@ export default class Encryption {
     const salt = bcrypt.genSaltSync(saltRounds);
     return bcrypt.hashSync(myPlaintextPassword, salt);
   }
+
+  /**
+   * @method comparePassword
+   *
+   * @param {string} password
+   * @param {string} hash
+   *
+   * @returns {string} hashPassword
+   */
+  static comparePassword(password, hash) {
+    return bcrypt.compareSync(password, hash);
+  }
 }

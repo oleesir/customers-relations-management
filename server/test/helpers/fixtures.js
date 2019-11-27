@@ -45,6 +45,35 @@ const invalidPasswordLength = {
   ...newUser, password: 'wer'
 };
 
+const authUser = {
+  email: 'nneka@gmail.com',
+  password: 'helloworldtwo'
+};
+
+const emptyAuthUser = {
+  ...authUser, email: '', password: ''
+};
+
+const emptyEmailAuthUser = {
+  ...authUser, email: '', password: 'helloworldtwo'
+};
+
+const emptyPasswordAuthUser = {
+  ...authUser, email: 'nneka@gmail.com', password: ''
+};
+
+const wrongUserAuth = {
+  ...authUser, email: 'linker@gmail.com', password: 'wertiutoeu'
+};
+
+const wrongUserAuthEmail = {
+  ...authUser, email: 'linker@gmail.com', password: 'helloworldtwo'
+};
+
+const wrongEmailAuthUser = {
+  ...authUser, email: 'nnekagmail.com', password: 'helloworldtwo'
+};
+
 const existingEmail = {
   firstName: 'blue',
   lastName: 'ivy',
@@ -63,5 +92,12 @@ export default {
   invalidEmail,
   emptyPassword,
   invalidPasswordLength,
-  existingEmail
+  existingEmail,
+  authUser,
+  emptyAuthUser,
+  emptyEmailAuthUser,
+  emptyPasswordAuthUser,
+  wrongUserAuth,
+  wrongUserAuthEmail,
+  wrongEmailAuthUser
 };

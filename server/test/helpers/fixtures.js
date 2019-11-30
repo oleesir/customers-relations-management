@@ -1,4 +1,6 @@
-import Jwt from 'jsonwebtoken';
+import Authorization from '../../src/middleware/Authorization.middlewares';
+
+const { generateToken } = Authorization;
 
 const newUser = {
   firstName: 'yellow',
@@ -81,6 +83,67 @@ const existingEmail = {
   password: 'poiuytrewq'
 };
 
+
+const staffPayload = {
+  id: 5,
+  email: 'ivy@gmail.com',
+  firstName: 'Ivy',
+  lastName: 'Lee',
+  password: 'secret',
+  role: 'staff'
+};
+
+const adminPayload = {
+  id: 5,
+  email: 'oleesir@gmail.com',
+  firstName: 'Olisa',
+  lastName: 'Emodi',
+  password: 'secret',
+  role: 'admin'
+};
+
+const staffToken = generateToken(staffPayload);
+const adminToken = generateToken(adminPayload);
+// const expiredToken = jwt.sign(clientPayload, process.env.SECRET_KEY, { expiresIn: '1' });
+
+
+const newCustomer = {
+  firstName: 'ben',
+  lastName: 'chichi',
+  email: 'chiben@gmail.com',
+  phoneNumber: '2341267890542',
+  address: 'number 50 townsend'
+};
+
+const emptyCustomer = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  phoneNumber: '',
+  address: ''
+};
+
+const emptyCustomerFirstName = {
+  ...newCustomer, firstName: ''
+};
+
+const emptyCustomerLastName = {
+  ...newCustomer, lastName: ''
+};
+
+const emptyCustomerEmail = {
+  ...newCustomer, email: ''
+};
+
+const emptyPhoneNumber = {
+  ...newCustomer, phoneNumber: ''
+};
+
+const emptyaddress = {
+  ...newCustomer, address: ''
+};
+
+
 export default {
   newUser,
   emptyFields,
@@ -99,5 +162,14 @@ export default {
   emptyPasswordAuthUser,
   wrongUserAuth,
   wrongUserAuthEmail,
-  wrongEmailAuthUser
+  wrongEmailAuthUser,
+  staffToken,
+  adminToken,
+  newCustomer,
+  emptyCustomer,
+  emptyCustomerFirstName,
+  emptyCustomerLastName,
+  emptyCustomerEmail,
+  emptyPhoneNumber,
+  emptyaddress
 };

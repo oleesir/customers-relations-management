@@ -1,4 +1,3 @@
-import Jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import Encryption from '../utils/encryption';
 import Model from '../db/index';
@@ -53,7 +52,6 @@ export default class AuthController {
 
     const token = generateToken(payload);
 
-    delete newUser.password;
 
     const data = {
       token,

@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS customers(
         staff_id INT NOT NULL,
         staff_name VARCHAR NOT NULL,
         email VARCHAR UNIQUE NOT NULL,
-        status CUSTOMERS_STATUS NOT NULL DEFAULT 'active',
+        status CUSTOMERS_STATUS NOT NULL DEFAULT 'inactive',
         phone_number VARCHAR UNIQUE NOT NULL,
         address VARCHAR NOT NULL,
         FOREIGN KEY(staff_id) REFERENCES users(id) ON DELETE CASCADE,

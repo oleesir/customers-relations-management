@@ -27,7 +27,7 @@ export default `
   INSERT INTO customers (first_name, last_name, email , staff_id, staff_name, address, phone_number, status)
   VALUES('Blessing', 'Uwem', 'uwembleble@gmail.com' , 2, 'Nneka Oguah','number 7 akoka modupe lane',09011234887,'inactive'); 
   INSERT INTO customers (first_name, last_name, email , staff_id, staff_name, address, phone_number, status)
-  VALUES('Nicholas', 'Anelka', 'anelkanic@gmail.com' , 5, 'Ivy Lee','number 8 akoka modupe lane',09044444444,'active'); 
+  VALUES('Nicholas', 'Anelka', 'anelkanic@gmail.com' , 5, 'Ivy Lee','number 8 akoka modupe lane',09044444444,'inactive'); 
   INSERT INTO customers (first_name, last_name, email , staff_id, staff_name, address, phone_number, status)
   VALUES('Abedi', 'Pele', 'pelelaki@gmail.com' , 2, 'Nneka Oguah','number 9 akoka modupe lane',0909404545,'active'); 
   INSERT INTO customers (first_name, last_name, email , staff_id, staff_name, address, phone_number, status)

@@ -15,7 +15,7 @@ export default class Authorization {
  *
  */
   static verifyToken(req, res, next) {
-    const BearerToken = req.header['x-auth-token'] || req.header.Authorization;
+    const BearerToken = req.headers['x-auth-token'] || req.headers.authorization || req.headers.Authorization;
     const token = BearerToken && BearerToken.replace('Bearer ', '');
 
     if (!token) {
@@ -47,5 +47,26 @@ export default class Authorization {
    */
   static generateToken(payload) {
     return Jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '1day' });
+  }
+
+  /**
+   * @method authorizeRoles
+   *
+   * @param {array} roles
+   *
+   * @returns {function} middleware to authorize role
+   */
+  static authorizeRoles(roles) {
+    return async (req, res, next) => {
+      const { role: userRole } = req.decoded;
+
+      if (!roles.includes(userRole)) {
+        return res.status(403).json({
+          status: 403,
+          error: 'You don\'t have the permission to perform this action'
+        });
+      }
+      next();
+    };
   }
 }

@@ -43,4 +43,52 @@ export default class CustomersController {
       message: 'Customer was created succesfully'
     });
   }
+
+  /**
+     *@method getSingleCustomer
+     *
+     * @param {object} req
+     * @param {object} res
+     *
+     * @return {object} status and message
+     */
+  static async getSingleCustomer(req, res) {
+    const { id } = req.params;
+    const { role, id: staffId } = req.decoded;
+
+    let findCustomer;
+
+    if (role === 'staff') {
+      [findCustomer] = await customers.select(['*'],
+        [`id = ${parseInt(id, 10)} AND staff_id = ${staffId}`]);
+    } else {
+      [findCustomer] = await customers.select(['*'],
+        `id=${parseInt(id, 10)}`);
+    }
+
+    if (!findCustomer) {
+      return res.status(404).json({
+        status: 404,
+        message: 'Customer does not exists'
+      });
+    }
+
+    const {
+      id: customerId, firstName, lastName, email, phoneNumber, address
+    } = findCustomer;
+
+    const data = {
+      customerId,
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      address
+    };
+
+    return res.status(200).json({
+      status: 200,
+      data
+    });
+  }
 }

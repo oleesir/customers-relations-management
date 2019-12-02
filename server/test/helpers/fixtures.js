@@ -1,3 +1,4 @@
+import Jwt from 'jsonwebtoken';
 import Authorization from '../../src/middleware/Authorization.middlewares';
 
 const { generateToken } = Authorization;
@@ -94,17 +95,17 @@ const staffPayload = {
 };
 
 const adminPayload = {
-  id: 5,
+  id: 1,
   email: 'oleesir@gmail.com',
   firstName: 'Olisa',
-  lastName: 'Emodi',
+  lastName: 'Emeka',
   password: 'secret',
   role: 'admin'
 };
 
 const staffToken = generateToken(staffPayload);
 const adminToken = generateToken(adminPayload);
-// const expiredToken = jwt.sign(clientPayload, process.env.SECRET_KEY, { expiresIn: '1' });
+const expiredToken = Jwt.sign(staffPayload, process.env.SECRET_KEY, { expiresIn: '1' });
 
 
 const newCustomer = {
@@ -143,6 +144,10 @@ const emptyaddress = {
   ...newCustomer, address: ''
 };
 
+const rightCustomerId = 4;
+const wrongCustomerId = 1;
+const invalidCustomerId = '1*/';
+
 
 export default {
   newUser,
@@ -171,5 +176,9 @@ export default {
   emptyCustomerLastName,
   emptyCustomerEmail,
   emptyPhoneNumber,
-  emptyaddress
+  emptyaddress,
+  rightCustomerId,
+  wrongCustomerId,
+  invalidCustomerId,
+  expiredToken
 };

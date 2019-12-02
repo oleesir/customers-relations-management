@@ -30,15 +30,15 @@ describe('Model: test wrong input', () => {
     });
   });
 
-  //   describe('update', () => {
-  //     it('should not update from table with wrong constraint', (done) => {
-  //       a.update(['status=\'active'], ['id=2'])
-  //         .then((result) => {
-  //           expect(result === undefined).to.equal(true);
-  //           done();
-  //         }).catch((err) => done(err));
-  //     });
-  //   });
+  describe('update', () => {
+    it('should not update from table with wrong constraint', (done) => {
+      customers.update(['first_name=\'Jordan'], ['id=2'])
+        .then((result) => {
+          expect(result === undefined).to.equal(true);
+          done();
+        }).catch((err) => done(err));
+    });
+  });
 
   describe('delete', () => {
     it('should not delete from table with wrong constraint', (done) => {

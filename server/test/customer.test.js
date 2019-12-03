@@ -188,4 +188,33 @@ describe('Customer Routes', () => {
         });
     });
   });
+
+
+  describe('Get all Customers', () => {
+    it('should get all customers for an admin', (done) => {
+      request(app)
+        .get(`${URL}/customers`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .expect(200)
+        .end((err, res) => {
+          expect(res.body).to.have.property('status').eql(200);
+          expect(res.status).to.equal(200);
+          if (err) return done(err);
+          done();
+        });
+    });
+
+    it('should get all customers registered by a staff', (done) => {
+      request(app)
+        .get(`${URL}/customers`)
+        .set('Authorization', `Bearer ${staffToken}`)
+        .expect(200)
+        .end((err, res) => {
+          expect(res.body).to.have.property('status').eql(200);
+          expect(res.status).to.equal(200);
+          if (err) return done(err);
+          done();
+        });
+    });
+  });
 });

@@ -91,4 +91,49 @@ export default class CustomersController {
       data
     });
   }
+
+
+  /**
+     *@method getAllCustomer
+     *
+     * @param {object} req
+     * @param {object} res
+     *
+     * @return {object} status and message
+     */
+  static async getAllCustomers(req, res) {
+    const { role, id: staffId } = req.decoded;
+    const { status } = req.query;
+
+    if (role === 'admin') {
+      if (!status) {
+        const allCustomers = await customers.selectAll(['*']);
+        return res.status(200).json({
+          status: 200,
+          customers: allCustomers
+        });
+      }
+      const activeCustomers = await customers.select(['*'], [`status='${status}'`]);
+      return res.status(200).json({
+        status: 200,
+        customers: activeCustomers
+      });
+    }
+
+
+    if (!status) {
+      const allCustomersForStaff = await customers.select(['*'], [`staff_id='${staffId}'`]);
+      return res.status(200).json({
+        status: 200,
+        customers: allCustomersForStaff
+      });
+    }
+
+
+    const allActiveCustomersForStaff = await customers.select(['*'], [` staff_id = ${staffId} AND status='${status}'`]);
+    return res.status(200).json({
+      status: 200,
+      customers: allActiveCustomersForStaff
+    });
+  }
 }

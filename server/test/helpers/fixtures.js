@@ -147,6 +147,9 @@ const emptyaddress = {
 const rightCustomerId = 4;
 const wrongCustomerId = 1;
 const invalidCustomerId = '1*/';
+const deleteCustomerId = 1;
+const deleteWrongCustomerId = 3;
+const nonExistingCustomerId = 599098;
 
 
 export default {
@@ -180,5 +183,8 @@ export default {
   rightCustomerId,
   wrongCustomerId,
   invalidCustomerId,
-  expiredToken
+  expiredToken,
+  deleteCustomerId,
+  deleteWrongCustomerId,
+  nonExistingCustomerId
 };

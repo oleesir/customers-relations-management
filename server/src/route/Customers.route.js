@@ -8,8 +8,10 @@ import asyncErrorHandler from '../middleware/asyncErrorHandler';
 const router = Router();
 
 const { verifyToken, authorizeRoles } = Authorization;
-const { createCustomer, getSingleCustomer, getAllCustomers } = CustomerController;
-const { validateCreateCustomer, validateGetCustomer } = Validation;
+const {
+  createCustomer, getSingleCustomer, getAllCustomers, deleteCustomer
+} = CustomerController;
+const { validateCreateCustomer, validateGetCustomer, validateDeleteCustomer } = Validation;
 
 router.post('/', verifyToken,
   authorizeRoles(['staff']),
@@ -23,5 +25,10 @@ router.get('/:id', verifyToken,
 router.get('/',
   verifyToken,
   asyncErrorHandler(getAllCustomers));
+
+router.delete('/:id',
+  verifyToken,
+  validateDeleteCustomer,
+  asyncErrorHandler(deleteCustomer));
 
 export default router;

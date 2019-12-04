@@ -136,4 +136,38 @@ export default class CustomersController {
       customers: allActiveCustomersForStaff
     });
   }
+
+  /**
+     *@method deleteCustomer
+     *
+     * @param {object} req
+     * @param {object} res
+     *
+     * @return {object} status and message
+     */
+  static async deleteCustomer(req, res) {
+    const { id } = req.params;
+    const { role, id: staffId } = req.decoded;
+    let findCustomer;
+
+    if (role === 'admin') {
+      [findCustomer] = await customers.select(['*'], [`id=${parseInt(id, 10)}`]);
+    } else {
+      [findCustomer] = await customers.select(['*'], [`id=${parseInt(id, 10)} AND staff_id=${staffId}`]);
+    }
+
+    if (!findCustomer) {
+      return res.status(404).json({
+        status: 404,
+        message: 'Customer does not exists'
+      });
+    }
+
+    await customers.delete([`id=${findCustomer.id}`]);
+
+    return res.status(200).json({
+      status: 200,
+      message: 'Customer deleted successfully'
+    });
+  }
 }

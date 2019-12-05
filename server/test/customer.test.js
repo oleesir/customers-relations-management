@@ -10,7 +10,8 @@ const {
   emptyCustomerLastName, emptyCustomerEmail, emptyPhoneNumber,
   emptyaddress, rightCustomerId, wrongCustomerId, adminToken,
   expiredToken, deleteCustomerId, deleteWrongCustomerId,
-  nonExistingCustomerId
+  nonExistingCustomerId, updateCustomerId, updateCustomer,
+  wrongUpdateCustomerId
 } = Fixtures;
 const URL = '/api/v1';
 
@@ -257,6 +258,51 @@ describe('Customer Routes', () => {
           expect(res.body).to.have.property('status').eql(404);
           expect(res.body).to.have.property('message').to.eql('Customer does not exists');
           expect(res.status).to.equal(404);
+          if (err) return done(err);
+          done();
+        });
+    });
+  });
+
+  describe('Update Customer', () => {
+    it('should allow a staff to update a customer', (done) => {
+      request(app)
+        .patch(`${URL}/customers/${updateCustomerId}`)
+        .set('Authorization', `Bearer ${staffToken}`)
+        .send(updateCustomer)
+        .expect(200)
+        .end((err, res) => {
+          expect(res.body).to.have.property('status').eql(200);
+          expect(res.body).to.have.property('message').eql('Customer updated successfully');
+          if (err) return done(err);
+          done();
+        });
+    });
+
+    it('should not allow a staff edit an account he or she did not create', (done) => {
+      request(app)
+        .patch(`${URL}/customers/${wrongUpdateCustomerId}`)
+        .set('Authorization', `Bearer ${staffToken}`)
+        .send(updateCustomer)
+        .expect(404)
+        .end((err, res) => {
+          expect(res.body).to.have.property('status').eql(404);
+          expect(res.body).to.have.property('message').to.eql('Customer does not exists');
+          if (err) return done(err);
+          done();
+        });
+    });
+
+
+    it('should not allow a staff edit a non existing customer', (done) => {
+      request(app)
+        .patch(`${URL}/customers/${nonExistingCustomerId}`)
+        .set('Authorization', `Bearer ${staffToken}`)
+        .send(updateCustomer)
+        .expect(404)
+        .end((err, res) => {
+          expect(res.body).to.have.property('status').eql(404);
+          expect(res.body).to.have.property('message').to.eql('Customer does not exists');
           if (err) return done(err);
           done();
         });

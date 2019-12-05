@@ -150,6 +150,16 @@ const invalidCustomerId = '1*/';
 const deleteCustomerId = 1;
 const deleteWrongCustomerId = 3;
 const nonExistingCustomerId = 599098;
+const updateCustomerId = 4;
+const wrongUpdateCustomerId = 2;
+
+const updateCustomer = {
+  firstName: 'zika',
+  lastName: 'chuchu',
+  email: 'zikachu@gmail.com',
+  // phoneNumber: '',
+  address: 'number 59 griffin'
+};
 
 
 export default {
@@ -186,5 +196,8 @@ export default {
   expiredToken,
   deleteCustomerId,
   deleteWrongCustomerId,
-  nonExistingCustomerId
+  nonExistingCustomerId,
+  updateCustomerId,
+  updateCustomer,
+  wrongUpdateCustomerId
 };

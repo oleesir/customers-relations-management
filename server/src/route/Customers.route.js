@@ -9,9 +9,11 @@ const router = Router();
 
 const { verifyToken, authorizeRoles } = Authorization;
 const {
-  createCustomer, getSingleCustomer, getAllCustomers, deleteCustomer
+  createCustomer, getSingleCustomer, getAllCustomers, deleteCustomer, updateCustomers
 } = CustomerController;
-const { validateCreateCustomer, validateGetCustomer, validateDeleteCustomer } = Validation;
+const {
+  validateCreateCustomer, validateGetCustomer, validateDeleteCustomer, validateUpdateCustomer
+} = Validation;
 
 router.post('/', verifyToken,
   authorizeRoles(['staff']),
@@ -30,5 +32,10 @@ router.delete('/:id',
   verifyToken,
   validateDeleteCustomer,
   asyncErrorHandler(deleteCustomer));
+
+router.patch('/:id',
+  verifyToken,
+  validateUpdateCustomer,
+  asyncErrorHandler(updateCustomers));
 
 export default router;

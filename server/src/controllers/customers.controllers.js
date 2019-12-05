@@ -170,4 +170,47 @@ export default class CustomersController {
       message: 'Customer deleted successfully'
     });
   }
+
+  /**
+     *@method updateCustomer
+     *
+     * @param {object} req
+     * @param {object} res
+     *
+     * @return {object} status and message
+     */
+  static async updateCustomers(req, res) {
+    const { id } = req.params;
+    const { role, id: staffId } = req.decoded;
+    const {
+      firstName, lastName, email, phoneNumber, address
+    } = req.body;
+
+    let findCustomer;
+
+    if (role === 'admin') {
+      [findCustomer] = await customers.select(['*'], [`id=${parseInt(id, 10)}`]);
+    } else {
+      [findCustomer] = await customers.select(['*'], [`id=${parseInt(id, 10)} AND staff_id=${staffId}`]);
+    }
+
+    if (!findCustomer) {
+      return res.status(404).json({
+        status: 404,
+        message: 'Customer does not exists'
+      });
+    }
+
+    const [updatedCustomer] = await customers.update([`first_name='${firstName || findCustomer.firstName}',
+    last_name='${lastName || findCustomer.lastName}',
+    email='${email || findCustomer.email}',
+    phone_number='${phoneNumber || findCustomer.phoneNumber}',
+    address='${address || findCustomer.address}'`], [`id=${findCustomer.id}`]);
+
+    return res.status(200).json({
+      status: 200,
+      customer: updatedCustomer,
+      message: 'Customer updated successfully'
+    });
+  }
 }

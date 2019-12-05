@@ -107,6 +107,30 @@ export const Validation = {
       });
     }
     return next();
+  },
+
+  validateUpdateCustomer(req, res, next) {
+    const schema = Joi.object().keys({
+      id: Joi.number().integer().min(1),
+      firstName: Joi.string().regex(/^[a-zA-Z]+$/).min(2).max(30),
+      lastName: Joi.string().regex(/^[a-zA-Z]+$/).min(3).max(30),
+      email: Joi.string().email({ minDomainSegments: 2 }).lowercase(),
+      phoneNumber: Joi.string().regex(/^234[0-9]{10}/),
+      address: Joi.string()
+
+    });
+
+    const result = schema.validate(req.body, { abortEarly: false });
+
+    if (result.error) {
+      const error = result.error.details.map((msg) => msg.message);
+
+      return res.status(400).json({
+        status: 400,
+        error,
+      });
+    }
+    return next();
   }
 
 };

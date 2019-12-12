@@ -1,8 +1,6 @@
 import Model from '../db/index';
 
-
 const customers = new Model('customers');
-
 
 /**
  * @class CustomersController
@@ -22,10 +20,8 @@ export default class CustomersController {
       firstName, lastName, email, phoneNumber, address
     } = req.body;
 
-
     const [newCustomer] = await customers.create(['first_name', 'last_name', 'staff_id', 'staff_name', 'email', 'status', 'phone_number', 'address'],
       [`'${firstName}','${lastName}','${id}','${staffFirstName} ${staffLastName}','${email}','inactive',${phoneNumber},'${address}'`]);
-
 
     const data = {
       firstName: newCustomer.firstName,
@@ -37,11 +33,7 @@ export default class CustomersController {
       address: newCustomer.address
     };
 
-    return res.status(201).json({
-      status: 201,
-      data,
-      message: 'Customer was created succesfully'
-    });
+    return res.status(201).json({ status: 201, data, message: 'Customer was created succesfully' });
   }
 
   /**
@@ -55,43 +47,25 @@ export default class CustomersController {
   static async getSingleCustomer(req, res) {
     const { id } = req.params;
     const { role, id: staffId } = req.decoded;
-
     let findCustomer;
 
     if (role === 'staff') {
-      [findCustomer] = await customers.select(['*'],
-        [`id = ${parseInt(id, 10)} AND staff_id = ${staffId}`]);
+      [findCustomer] = await customers.select(['*'], [`id = ${parseInt(id, 10)} AND staff_id = ${staffId}`]);
     } else {
-      [findCustomer] = await customers.select(['*'],
-        `id=${parseInt(id, 10)}`);
+      [findCustomer] = await customers.select(['*'], `id=${parseInt(id, 10)}`);
     }
 
-    if (!findCustomer) {
-      return res.status(404).json({
-        status: 404,
-        message: 'Customer does not exists'
-      });
-    }
+    if (!findCustomer)res.status(404).json({ status: 404, message: 'Customer does not exists' });
 
     const {
       id: customerId, firstName, lastName, email, phoneNumber, address
     } = findCustomer;
-
     const data = {
-      customerId,
-      firstName,
-      lastName,
-      email,
-      phoneNumber,
-      address
+      customerId, firstName, lastName, email, phoneNumber, address
     };
 
-    return res.status(200).json({
-      status: 200,
-      data
-    });
+    return res.status(200).json({ status: 200, data });
   }
-
 
   /**
      *@method getAllCustomer
@@ -108,33 +82,21 @@ export default class CustomersController {
     if (role === 'admin') {
       if (!status) {
         const allCustomers = await customers.selectAll(['*']);
-        return res.status(200).json({
-          status: 200,
-          customers: allCustomers
-        });
+        return res.status(200).json({ status: 200, customers: allCustomers });
       }
-      const activeCustomers = await customers.select(['*'], [`status='${status}'`]);
-      return res.status(200).json({
-        status: 200,
-        customers: activeCustomers
-      });
-    }
 
+      const activeCustomers = await customers.select(['*'], [`status='${status}'`]);
+
+      return res.status(200).json({ status: 200, customers: activeCustomers });
+    }
 
     if (!status) {
       const allCustomersForStaff = await customers.select(['*'], [`staff_id='${staffId}'`]);
-      return res.status(200).json({
-        status: 200,
-        customers: allCustomersForStaff
-      });
+      return res.status(200).json({ status: 200, customers: allCustomersForStaff });
     }
 
-
     const allActiveCustomersForStaff = await customers.select(['*'], [` staff_id = ${staffId} AND status='${status}'`]);
-    return res.status(200).json({
-      status: 200,
-      customers: allActiveCustomersForStaff
-    });
+    return res.status(200).json({ status: 200, customers: allActiveCustomersForStaff });
   }
 
   /**
@@ -148,27 +110,19 @@ export default class CustomersController {
   static async deleteCustomer(req, res) {
     const { id } = req.params;
     const { role, id: staffId } = req.decoded;
-    let findCustomer;
+    let foundCustomer;
 
     if (role === 'admin') {
-      [findCustomer] = await customers.select(['*'], [`id=${parseInt(id, 10)}`]);
+      [foundCustomer] = await customers.select(['*'], [`id=${parseInt(id, 10)}`]);
     } else {
-      [findCustomer] = await customers.select(['*'], [`id=${parseInt(id, 10)} AND staff_id=${staffId}`]);
+      [foundCustomer] = await customers.select(['*'], [`id=${parseInt(id, 10)} AND staff_id=${staffId}`]);
     }
 
-    if (!findCustomer) {
-      return res.status(404).json({
-        status: 404,
-        message: 'Customer does not exists'
-      });
-    }
+    if (!foundCustomer)res.status(404).json({ status: 404, message: 'Customer does not exists' });
 
-    await customers.delete([`id=${findCustomer.id}`]);
+    await customers.delete([`id=${foundCustomer.id}`]);
 
-    return res.status(200).json({
-      status: 200,
-      message: 'Customer deleted successfully'
-    });
+    return res.status(200).json({ status: 200, message: 'Customer deleted successfully' });
   }
 
   /**
@@ -185,7 +139,6 @@ export default class CustomersController {
     const {
       firstName, lastName, email, phoneNumber, address
     } = req.body;
-
     let findCustomer;
 
     if (role === 'admin') {
@@ -194,12 +147,7 @@ export default class CustomersController {
       [findCustomer] = await customers.select(['*'], [`id=${parseInt(id, 10)} AND staff_id=${staffId}`]);
     }
 
-    if (!findCustomer) {
-      return res.status(404).json({
-        status: 404,
-        message: 'Customer does not exists'
-      });
-    }
+    if (!findCustomer) res.status(404).json({ status: 404, message: 'Customer does not exists' });
 
     const [updatedCustomer] = await customers.update([`first_name='${firstName || findCustomer.firstName}',
     last_name='${lastName || findCustomer.lastName}',
@@ -207,10 +155,6 @@ export default class CustomersController {
     phone_number='${phoneNumber || findCustomer.phoneNumber}',
     address='${address || findCustomer.address}'`], [`id=${findCustomer.id}`]);
 
-    return res.status(200).json({
-      status: 200,
-      customer: updatedCustomer,
-      message: 'Customer updated successfully'
-    });
+    return res.status(200).json({ status: 200, customer: updatedCustomer, message: 'Customer updated successfully' });
   }
 }

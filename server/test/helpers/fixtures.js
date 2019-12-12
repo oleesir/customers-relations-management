@@ -161,6 +161,56 @@ const updateCustomer = {
   address: 'number 59 griffin'
 };
 
+const newEmail = {
+  emails: ['uwembleble@gmail.com', 'pelelaki@gmail.com'],
+  subject: 'hello worldy',
+  message: 'Am running a good test',
+  deliveryDate: '2019-12-14'
+};
+
+const newEmailTwo = {
+  emails: ['ricky@gmail.com', 'chiben@gmail.com'],
+  subject: 'hello worldy',
+  message: 'Am running a good test',
+  deliveryDate: '2019-12-14'
+};
+
+const emptyEmailField = {
+  emails: [],
+  subject: 'hello worldy',
+  message: 'Am running a good test',
+  deliveryDate: '2019-12-14'
+};
+
+const emptySubjectField = {
+  emails: ['ricky@gmail.com', 'chiben@gmail.com'],
+  subject: '',
+  message: 'Am running a good test',
+  deliveryDate: '2019-12-14'
+};
+
+
+const emptyMessageField = {
+  emails: ['ricky@gmail.com', 'chiben@gmail.com'],
+  subject: 'hello worldy',
+  message: '',
+  deliveryDate: '2019-12-14'
+};
+
+const emptyDeliveryDateField = {
+  emails: ['ricky@gmail.com', 'chiben@gmail.com'],
+  subject: 'hello worldy',
+  message: 'Am running a good test',
+  deliveryDate: ''
+};
+
+const wrongEmailField = {
+  emails: ['pulvid@gmail.com', 'benjonny@gmail.com'],
+  subject: 'hello worldy',
+  message: 'Am running a good test',
+  deliveryDate: '2019-12-14'
+};
+
 
 export default {
   newUser,
@@ -199,5 +249,12 @@ export default {
   nonExistingCustomerId,
   updateCustomerId,
   updateCustomer,
-  wrongUpdateCustomerId
+  wrongUpdateCustomerId,
+  newEmail,
+  newEmailTwo,
+  emptyEmailField,
+  emptySubjectField,
+  emptyMessageField,
+  emptyDeliveryDateField,
+  wrongEmailField
 };

@@ -29,18 +29,11 @@ export default class AuthController {
 
     const [existingUser] = await users.select(['email'], [`email = '${email}'`]);
 
-    if (existingUser) {
-      res.status(409).json({
-        status: 409,
-        message: 'User already exists'
-      });
-    }
+    if (existingUser) res.status(409).json({ status: 409, message: 'User already exists' });
 
     const hash = hashPassword(password);
-
     const [newUser] = await users.create(['first_name', 'last_name', 'email', 'password', 'role'],
       [`'${firstName}','${lastName}','${email}','${hash}','staff'`]);
-
 
     const payload = {
       id: newUser.id,
@@ -51,20 +44,10 @@ export default class AuthController {
     };
 
     const token = generateToken(payload);
+    const data = { token, ...newUser };
 
-
-    const data = {
-      token,
-      ...newUser
-    };
-
-    return res.status(201).json({
-      status: 201,
-      data,
-      message: 'User registered successfully'
-    });
+    return res.status(201).json({ status: 201, data, message: 'User registered successfully' });
   }
-
 
   /**
  * @method signin
@@ -76,16 +59,9 @@ export default class AuthController {
  */
   static async signin(req, res) {
     const { email, password } = req.body;
-
     const [findUser] = await users.select(['*'], `email = '${email}'`);
 
-    if (!findUser) {
-      return res.status(401)
-        .json({
-          status: 401,
-          message: 'Email or password is incorrect'
-        });
-    }
+    if (!findUser) res.status(401).json({ status: 401, message: 'Email or password is incorrect' });
 
     if (findUser) {
       const {
@@ -97,39 +73,17 @@ export default class AuthController {
 
       const verifyPassword = comparePassword(password, findUser.password);
 
-      if (!verifyPassword) {
-        return res.status(401).json({
-          status: 401,
-          message: 'Email or password is incorrect'
-
-        });
-      }
+      if (!verifyPassword) res.status(401).json({ status: 401, message: 'Email or password is incorrect' });
 
       const payload = {
-        id,
-        firstName,
-        lastName,
-        role
+        id, firstName, lastName, role
       };
 
       const token = generateToken(payload);
+      const data = { ...payload, token };
 
-      const data = {
-        ...payload,
-        token
-      };
-
-      return res.status(200).json({
-        status: 200,
-        data,
-        message: 'Login successful'
-      });
+      return res.status(200).json({ status: 200, data, message: 'Login successful' });
     }
-
-    return res.status(401)
-      .json({
-        status: 401,
-        message: 'Email or password is incorrect'
-      });
+    return res.status(401).json({ status: 401, message: 'Email or password is incorrect' });
   }
 }

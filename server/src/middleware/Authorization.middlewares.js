@@ -18,19 +18,11 @@ export default class Authorization {
     const BearerToken = req.headers['x-auth-token'] || req.headers.authorization || req.headers.Authorization;
     const token = BearerToken && BearerToken.replace('Bearer ', '');
 
-    if (!token) {
-      return res.status(401).json({
-        status: 401,
-        message: 'Please provide a token'
-      });
-    }
-
+    if (!token) return res.status(401).json({ status: 401, message: 'Please provide a token' });
 
     return Jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
       if (err) {
-        if (err.name === 'TokenExpiredError') {
-          return res.status(401).json({ status: 401, error: 'User authorization token is expired' });
-        }
+        if (err.name === 'TokenExpiredError') res.status(401).json({ status: 401, error: 'User authorization token is expired' });
         return res.status(401).json({ status: 401, error: 'Invalid token' });
       }
       req.decoded = decoded;
@@ -60,12 +52,8 @@ export default class Authorization {
     return async (req, res, next) => {
       const { role: userRole } = req.decoded;
 
-      if (!roles.includes(userRole)) {
-        return res.status(403).json({
-          status: 403,
-          error: 'You don\'t have the permission to perform this action'
-        });
-      }
+      if (!roles.includes(userRole))res.status(403).json({ status: 403, error: 'You don\'t have the permission to perform this action' });
+
       next();
     };
   }

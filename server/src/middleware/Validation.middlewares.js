@@ -1,5 +1,7 @@
 import Joi from '@hapi/joi';
+import moment from 'moment';
 
+const now = moment().format('YYYY-MM-DD,h:mm:ss');
 
 export const Validation = {
   validateSignup(req, res, next) {
@@ -16,11 +18,7 @@ export const Validation = {
 
     if (result.error) {
       const error = result.error.details.map((msg) => msg.message);
-
-      return res.status(400).json({
-        status: 400,
-        error,
-      });
+      return res.status(400).json({ status: 400, error });
     }
     return next();
   },
@@ -35,15 +33,10 @@ export const Validation = {
 
     if (result.error) {
       const error = result.error.details.map((msg) => msg.message);
-
-      return res.status(400).json({
-        status: 400,
-        error,
-      });
+      return res.status(400).json({ status: 400, error });
     }
     return next();
   },
-
 
   validateCreateCustomer(req, res, next) {
     const schema = Joi.object().keys({
@@ -52,40 +45,26 @@ export const Validation = {
       lastName: Joi.string().regex(/^[a-zA-Z]+$/).min(3).max(30)
         .required(),
       email: Joi.string().email({ minDomainSegments: 2 }).lowercase().required(),
-      phoneNumber: Joi.string().regex(/^234[0-9]{10}/).required()
-        .required(),
+      phoneNumber: Joi.string().regex(/^234[0-9]{10}/).required().required(),
       address: Joi.string().required()
-
     });
 
     const result = schema.validate(req.body, { abortEarly: false });
 
     if (result.error) {
       const error = result.error.details.map((msg) => msg.message);
-
-      return res.status(400).json({
-        status: 400,
-        error,
-      });
+      return res.status(400).json({ status: 400, error });
     }
     return next();
   },
 
   validateGetCustomer(req, res, next) {
-    const schema = Joi.object().keys({
-      id: Joi.number().integer().min(1)
-
-    });
-
+    const schema = Joi.object().keys({ id: Joi.number().integer().min(1) });
     const result = schema.validate(req.body, { abortEarly: false });
 
     if (result.error) {
       const error = result.error.details.map((msg) => msg.message);
-
-      return res.status(400).json({
-        status: 400,
-        error,
-      });
+      return res.status(400).json({ status: 400, error });
     }
     return next();
   },
@@ -93,18 +72,13 @@ export const Validation = {
   validateDeleteCustomer(req, res, next) {
     const schema = Joi.object().keys({
       id: Joi.number().integer().min(1)
-
     });
 
     const result = schema.validate(req.body, { abortEarly: false });
 
     if (result.error) {
       const error = result.error.details.map((msg) => msg.message);
-
-      return res.status(400).json({
-        status: 400,
-        error,
-      });
+      return res.status(400).json({ status: 400, error });
     }
     return next();
   },
@@ -117,22 +91,42 @@ export const Validation = {
       email: Joi.string().email({ minDomainSegments: 2 }).lowercase(),
       phoneNumber: Joi.string().regex(/^234[0-9]{10}/),
       address: Joi.string()
-
     });
 
     const result = schema.validate(req.body, { abortEarly: false });
 
     if (result.error) {
       const error = result.error.details.map((msg) => msg.message);
+      return res.status(400).json({ status: 400, error });
+    }
+    return next();
+  },
 
-      return res.status(400).json({
-        status: 400,
-        error,
-      });
+  validateCreateEmail(req, res, next) {
+    const schema = Joi.object().keys({
+      emails: Joi.array()
+        .items(
+          Joi.string()
+            .email({ minDomainSegments: 2 })
+            .lowercase()
+            .required(),
+        )
+        .min(1)
+        .required()
+        .unique(),
+      subject: Joi.string().required(),
+      message: Joi.string().required(),
+      deliveryDate: Joi.date().greater(now).less('2029-12-31')
+        .required()
+    });
+
+    const result = schema.validate(req.body, { abortEarly: false });
+
+    if (result.error) {
+      const error = result.error.details.map((msg) => msg.message);
+      return res.status(400).json({ status: 400, error });
     }
     return next();
   }
-
 };
-
 export default Validation;

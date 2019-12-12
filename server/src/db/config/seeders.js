@@ -34,4 +34,20 @@ export default `
   VALUES('Ronaldo', 'Ricky', 'ricky@gmail.com' , 5, 'Ivy Lee','number 10 akoka modupe lane',03411234567,'active'); 
   INSERT INTO customers (first_name, last_name, email , staff_id, staff_name, address, phone_number, status)
   VALUES('Vidic', 'Pulsic', 'pulvid@gmail.com' , 3, 'James Udoh','number 11 akoka modupe lane',12011234567,'active');  
+
+
+  INSERT INTO notifications (staff_id, subject, message, emails, status , delivery_date)
+  VALUES(2, 'hello world', 'hello you are now getting better with backend', ARRAY['gordonb@gmail.com', 'benjonny@gmail.com', 'iverenshaguy@gmail.com'], 'undelivered' , '2019-12-03 10:05:19.148088'); 
+  INSERT INTO notifications (staff_id, subject, message, emails, status , delivery_date)
+  VALUES(3, 'hello world', 'hello you are now getting better with backend',  ARRAY['benjonny@gmail.com'], 'undelivered' , '2019-12-03 10:05:19.148088'); 
+  INSERT INTO notifications (staff_id, subject, message, emails, status , delivery_date)
+  VALUES(2, 'hello world', 'hello you are now getting better with backend', ARRAY['uwembleble@gmail.com'], 'delivered' , '2019-12-03 10:05:19.148088'); 
+  INSERT INTO notifications (staff_id, subject, message, emails, status , delivery_date)
+  VALUES(5, 'hello world', 'hello you are now getting better with backend', ARRAY['anelkanic@gmail.com'], 'delivered' , '2019-12-03 10:05:19.148088'); 
+  INSERT INTO notifications (staff_id, subject, message, emails, status , delivery_date)
+  VALUES(2, 'hello world', 'hello you are now getting better with backend', ARRAY['pelelaki@gmail.com'], 'delivered' , '2019-12-03 10:05:19.148088');  
+  INSERT INTO notifications (staff_id, subject, message, emails, status , delivery_date)
+  VALUES(5, 'hello world', 'hello you are now getting better with backend', ARRAY['ricky@gmail.com'], 'undelivered' , '2019-12-03 10:05:19.148088');  
+  INSERT INTO notifications (staff_id, subject, message, emails, status , delivery_date)
+  VALUES(3, 'hello world', 'hello you are now getting better with backend', ARRAY['pulvid@gmail.com'], 'delivered' , '2019-12-03 10:05:19.148088'); 
 `;

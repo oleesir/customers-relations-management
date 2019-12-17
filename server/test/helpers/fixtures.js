@@ -1,8 +1,11 @@
 import Jwt from 'jsonwebtoken';
+import moment from 'moment';
 import Authorization from '../../src/middleware/Authorization.middlewares';
 
 const { generateToken } = Authorization;
+const startDate = new Date();
 
+const todaysDate = moment(startDate, 'YYYY-MM-DD').add('days', 1);
 const newUser = {
   firstName: 'yellow',
   lastName: 'color',
@@ -165,28 +168,28 @@ const newEmail = {
   emails: ['uwembleble@gmail.com', 'pelelaki@gmail.com'],
   subject: 'hello worldy',
   message: 'Am running a good test',
-  deliveryDate: '2019-12-14'
+  deliveryDate: todaysDate
 };
 
 const newEmailTwo = {
   emails: ['ricky@gmail.com', 'chiben@gmail.com'],
   subject: 'hello worldy',
   message: 'Am running a good test',
-  deliveryDate: '2019-12-14'
+  deliveryDate: todaysDate
 };
 
 const emptyEmailField = {
   emails: [],
   subject: 'hello worldy',
   message: 'Am running a good test',
-  deliveryDate: '2019-12-14'
+  deliveryDate: todaysDate
 };
 
 const emptySubjectField = {
   emails: ['ricky@gmail.com', 'chiben@gmail.com'],
   subject: '',
   message: 'Am running a good test',
-  deliveryDate: '2019-12-14'
+  deliveryDate: todaysDate
 };
 
 
@@ -194,7 +197,7 @@ const emptyMessageField = {
   emails: ['ricky@gmail.com', 'chiben@gmail.com'],
   subject: 'hello worldy',
   message: '',
-  deliveryDate: '2019-12-14'
+  deliveryDate: todaysDate
 };
 
 const emptyDeliveryDateField = {
@@ -208,7 +211,16 @@ const wrongEmailField = {
   emails: ['pulvid@gmail.com', 'benjonny@gmail.com'],
   subject: 'hello worldy',
   message: 'Am running a good test',
-  deliveryDate: '2019-12-14'
+  deliveryDate: todaysDate
+};
+
+const newAutoEmail = {
+  emails: ['pelelaki@gmail.com'],
+  // from: '"Example Team" <olisa-45f86f@inbox.mailtrap.io>',
+  message: 'Am running a good test',
+  subject: 'hello worldy',
+  deliveryDate: todaysDate
+
 };
 
 
@@ -256,5 +268,6 @@ export default {
   emptySubjectField,
   emptyMessageField,
   emptyDeliveryDateField,
-  wrongEmailField
+  wrongEmailField,
+  newAutoEmail
 };

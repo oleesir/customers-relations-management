@@ -9,7 +9,7 @@
     "dev": "nodemon ./server/src/app.js --exec babel-node",
     "setup:db": "node ./server/dist/db/setup.js",
     "setup:db:dev": "babel-node ./server/src/db/setup.js",
-    "test": "NODE_ENV=test npm run setup:db:dev && NODE_ENV=test mocha --require @babel/register server/test/tests.test.js --exit",
+    "test": "NODE_ENV=test npm run setup:db:dev && NODE_ENV=test mocha --require @babel/register --timeout 5000 server/test/tests.test.js --exit",
     "test:coverage": "nyc --reporter=text --reporter=json --reporter=lcov npm run test",
     "codecov": "codecov",
     "lint": "eslint \"**/*.js\" --fix"
@@ -53,6 +53,7 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
+    "node-cron": "^2.0.3",
     "nodemailer": "^6.4.0",
     "pg": "^7.12.1"
   }

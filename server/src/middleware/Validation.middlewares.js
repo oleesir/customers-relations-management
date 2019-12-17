@@ -127,6 +127,34 @@ export const Validation = {
       return res.status(400).json({ status: 400, error });
     }
     return next();
+  },
+
+
+  validateAutomatedCreateEmail(req, res, next) {
+    const schema = Joi.object().keys({
+      emails: Joi.array()
+        .items(
+          Joi.string()
+            .email({ minDomainSegments: 2 })
+            .lowercase()
+            .required(),
+        )
+        .min(1)
+        .required()
+        .unique(),
+      subject: Joi.string().required(),
+      message: Joi.string().required(),
+      deliveryDate: Joi.date().greater(now).less('2029-12-31')
+        .required()
+    });
+
+    const result = schema.validate(req.body, { abortEarly: false });
+
+    if (result.error) {
+      const error = result.error.details.map((msg) => msg.message);
+      return res.status(400).json({ status: 400, error });
+    }
+    return next();
   }
 };
 export default Validation;

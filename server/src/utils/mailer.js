@@ -9,7 +9,11 @@ const transporter = nodemailer.createTransport({
   auth: {
     user: '26fdd55cbd69c7',
     pass: '8ac614886118b2'
-  }
+  },
+  pool: true, // use pooled connection
+  rateLimit: true, // enable to make sure we are limiting
+  maxConnections: 5, // set limit to 1 connection only
+  maxMessages: 300 // send 3 emails per second
 });
 
 /**

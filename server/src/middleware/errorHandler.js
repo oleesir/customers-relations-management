@@ -14,7 +14,6 @@ export default class ErrorHandler {
   */
   static sendError(err, req, res, next) {
     if (res.headersSent) next(err);
-
     return res.status(err.status || 500).json({ error: err.message });
   }
 }

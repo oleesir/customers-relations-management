@@ -7,9 +7,10 @@ import asyncErrorHandler from '../middleware/asyncErrorHandler';
 const router = Router();
 
 const { verifyToken } = Authorization;
-const { sendEmailToGroup } = NotificationController;
-const { validateCreateEmail } = Validation;
+const { sendEmailToGroup, sendScheduleEmailToGroup } = NotificationController;
+const { validateCreateEmail, validateAutomatedCreateEmail } = Validation;
 
 router.post('/email', verifyToken, validateCreateEmail, asyncErrorHandler(sendEmailToGroup));
+router.post('/autoEmail', verifyToken, validateAutomatedCreateEmail, asyncErrorHandler(sendScheduleEmailToGroup));
 
 export default router;

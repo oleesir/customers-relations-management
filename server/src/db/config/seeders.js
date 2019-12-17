@@ -39,7 +39,7 @@ export default `
   INSERT INTO notifications (staff_id, subject, message, emails, status , delivery_date)
   VALUES(2, 'hello world', 'hello you are now getting better with backend', ARRAY['gordonb@gmail.com', 'benjonny@gmail.com', 'iverenshaguy@gmail.com'], 'undelivered' , '2019-12-03 10:05:19.148088'); 
   INSERT INTO notifications (staff_id, subject, message, emails, status , delivery_date)
-  VALUES(3, 'hello world', 'hello you are now getting better with backend',  ARRAY['benjonny@gmail.com'], 'undelivered' , '2019-12-03 10:05:19.148088'); 
+  VALUES(3, 'hello world', 'hello you are now getting better with backend',  ARRAY['benjonny@gmail.com'], 'undelivered' , '2019-12-15 10:05:19.148088'); 
   INSERT INTO notifications (staff_id, subject, message, emails, status , delivery_date)
   VALUES(2, 'hello world', 'hello you are now getting better with backend', ARRAY['uwembleble@gmail.com'], 'delivered' , '2019-12-03 10:05:19.148088'); 
   INSERT INTO notifications (staff_id, subject, message, emails, status , delivery_date)
@@ -47,7 +47,7 @@ export default `
   INSERT INTO notifications (staff_id, subject, message, emails, status , delivery_date)
   VALUES(2, 'hello world', 'hello you are now getting better with backend', ARRAY['pelelaki@gmail.com'], 'delivered' , '2019-12-03 10:05:19.148088');  
   INSERT INTO notifications (staff_id, subject, message, emails, status , delivery_date)
-  VALUES(5, 'hello world', 'hello you are now getting better with backend', ARRAY['ricky@gmail.com'], 'undelivered' , '2019-12-03 10:05:19.148088');  
+  VALUES(5, 'hello world', 'hello you are now getting better with backend', ARRAY['ricky@gmail.com'], 'undelivered' , '2019-12-15 10:05:19.148088');  
   INSERT INTO notifications (staff_id, subject, message, emails, status , delivery_date)
   VALUES(3, 'hello world', 'hello you are now getting better with backend', ARRAY['pulvid@gmail.com'], 'delivered' , '2019-12-03 10:05:19.148088'); 
 `;

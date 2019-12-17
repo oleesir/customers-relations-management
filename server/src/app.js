@@ -1,11 +1,14 @@
 import express from 'express';
 import routes from './route/index';
 import ErrorHandler from './middleware/errorHandler';
+import scheduler from './utils/schedules';
 
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+scheduler();
 
 app.use('/api/v1', routes);
 app.use(ErrorHandler.sendError);

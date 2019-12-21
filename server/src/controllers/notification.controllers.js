@@ -1,8 +1,10 @@
 import Model from '../db/index';
 import { transporter, bccMailOptions } from '../utils/mailer';
+import { twilio, messageOptions } from '../utils/messenger';
 
 const customers = new Model('customers');
 const notifications = new Model('notifications');
+const sms_notifications = new Model('sms_notifications');
 
 /**
  * @class NotificationsController
@@ -116,6 +118,70 @@ export default class NotificationController {
           status: notification.status,
         }
       });
+    }
+  }
+
+  /**
+     *@method sendSmsToCustomer
+     *
+     * @param {object} req
+     * @param {object} res
+     *
+     * @return {object} status and message
+     */
+  static async sendSmsToCustomer(req, res) {
+    const { role, id: staffId } = req.decoded;
+    const {
+      message, deliveryDate, phoneNumbers
+    } = req.body;
+    let foundCustomers;
+
+    if (role === 'admin') {
+      foundCustomers = await customers.select(['*'], [`phone_number IN ('${phoneNumbers.join("','")}')`]);
+    } else {
+      foundCustomers = await customers.select(['*'], [`phone_number IN ('${phoneNumbers.join("','")}') AND staff_id=${staffId}`]);
+    }
+
+    const foundCustomersPhoneNumber = foundCustomers.map((customer) => customer.phoneNumber);
+
+    if (foundCustomersPhoneNumber.length !== phoneNumbers.length) {
+      return res.status(400).json({
+        status: 400,
+        message: 'Message not queued because some of these customers were either not found or do not belong to you',
+        wrongPhoneNumbers: phoneNumbers
+          .filter((phoneNumber) => !foundCustomersPhoneNumber.includes(phoneNumber))
+      });
+    }
+
+    if (foundCustomersPhoneNumber.length > 0) {
+      try {
+        const [notification] = await sms_notifications.create(['message', 'phone_number', 'staff_id', 'delivery_date'],
+          [`'${message}',ARRAY['${phoneNumbers.join("','")}'],'${staffId}','${deliveryDate}'`]);
+
+        const handleMessage = async () => {
+          const messaging = await twilio.messages.create(
+            messageOptions({
+              to: notification.phone_number,
+              body: message
+            })
+          );
+          return messaging;
+        };
+
+        handleMessage();
+        await sms_notifications.update(['status=\'delivered\''], [`id='${notification.id}'`]);
+
+        return res.status(200).json({
+          status: 200,
+          data: {
+            message: 'Sms sent successfully',
+            content: message
+
+          }
+        });
+      } catch (err) {
+        console.log(err);
+      }
     }
   }
 }

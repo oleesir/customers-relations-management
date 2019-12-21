@@ -3,7 +3,7 @@ import moment from 'moment';
 
 const now = moment().format('YYYY-MM-DD,h:mm:ss');
 
-export const Validation = {
+const Validation = {
   validateSignup(req, res, next) {
     const schema = Joi.object().keys({
       firstName: Joi.string().regex(/^[a-zA-Z]+$/).min(2).max(30)
@@ -45,7 +45,7 @@ export const Validation = {
       lastName: Joi.string().regex(/^[a-zA-Z]+$/).min(3).max(30)
         .required(),
       email: Joi.string().email({ minDomainSegments: 2 }).lowercase().required(),
-      phoneNumber: Joi.string().regex(/^234[0-9]{10}/).required().required(),
+      phoneNumber: Joi.string().regex(/^\+[1-9]\d{1,14}$/).required(),
       address: Joi.string().required()
     });
 
@@ -89,7 +89,7 @@ export const Validation = {
       firstName: Joi.string().regex(/^[a-zA-Z]+$/).min(2).max(30),
       lastName: Joi.string().regex(/^[a-zA-Z]+$/).min(3).max(30),
       email: Joi.string().email({ minDomainSegments: 2 }).lowercase(),
-      phoneNumber: Joi.string().regex(/^234[0-9]{10}/),
+      phoneNumber: Joi.string().regex(/^\+[1-9]\d{1,14}$/),
       address: Joi.string()
     });
 
@@ -129,7 +129,6 @@ export const Validation = {
     return next();
   },
 
-
   validateAutomatedCreateEmail(req, res, next) {
     const schema = Joi.object().keys({
       emails: Joi.array()
@@ -155,6 +154,29 @@ export const Validation = {
       return res.status(400).json({ status: 400, error });
     }
     return next();
-  }
+  },
+
+  validateCreateSms(req, res, next) {
+    const schema = Joi.object().keys({
+      phoneNumbers: Joi.array()
+        .items(
+          Joi.string().regex(/^\+[1-9]\d{1,14}$/).required()
+        )
+        .min(1)
+        .required()
+        .unique(),
+      message: Joi.string().required(),
+      deliveryDate: Joi.date().greater(now).less('2029-12-31')
+        .required()
+    });
+
+    const result = schema.validate(req.body, { abortEarly: false });
+
+    if (result.error) {
+      const error = result.error.details.map((msg) => msg.message);
+      return res.status(400).json({ status: 400, error });
+    }
+    return next();
+  },
 };
 export default Validation;

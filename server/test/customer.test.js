@@ -10,6 +10,7 @@ const {
   emptyaddress, rightCustomerId, wrongCustomerId, adminToken,
   expiredToken, deleteCustomerId, deleteWrongCustomerId,
   nonExistingCustomerId, updateCustomerId, updateCustomer,
+  emptyUpdatedCustomer,
   wrongUpdateCustomerId
 } = Fixtures;
 const URL = '/api/v1';
@@ -306,5 +307,23 @@ describe('Customer Routes', () => {
           done();
         });
     });
+  });
+
+  it('should not allow a staff edit an empty customer field', (done) => {
+    request(app)
+      .patch(`${URL}/customers/${updateCustomerId}`)
+      .set('Authorization', `Bearer ${staffToken}`)
+      .send(emptyUpdatedCustomer)
+      .expect(400)
+      .end((err, res) => {
+        expect(res.body).to.have.property('status').eql(400);
+        expect(res.body.error[0]).to.equal('"firstName" is not allowed to be empty');
+        expect(res.body.error[1]).to.equal('"lastName" is not allowed to be empty');
+        expect(res.body.error[2]).to.equal('"email" is not allowed to be empty');
+        expect(res.body.error[3]).to.equal('"phoneNumber" is not allowed to be empty');
+        expect(res.body.error[4]).to.equal('"address" is not allowed to be empty');
+        if (err) return done(err);
+        done();
+      });
   });
 });

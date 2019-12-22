@@ -16,7 +16,7 @@ const URL = '/api/v1/notifications';
 
 
 describe('Email Routes', () => {
-  const sandbox = sinon.sandbox.create();
+  const sandbox = sinon.createSandbox();
   const fakeSendMail = sinon.fake.resolves();
 
   before(() => {

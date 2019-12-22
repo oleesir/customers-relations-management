@@ -11,7 +11,7 @@ const {
   nonAlphabetsFirstName, nonAlphabetsLastName,
   emptyEmail, invalidEmail, emptyPassword, invalidPasswordLength,
   existingEmail, authUser, emptyAuthUser, emptyEmailAuthUser,
-  emptyPasswordAuthUser, wrongUserAuth, wrongUserAuthEmail,
+  emptyPasswordAuthUser, wrongUserAuth, wrongUserAuthEmail, wrongUserAuthPassword,
   wrongEmailAuthUser
 } = Fixtures;
 
@@ -266,6 +266,19 @@ describe('AuthRoute', () => {
         .end((err, res) => {
           expect(res.body).to.have.property('status').equal(400);
           expect(res.body.error[0]).to.equal('"email" must be a valid email');
+          if (err) return done(err);
+          done();
+        });
+    });
+
+    it('should not log in a new user with an invalid password', (done) => {
+      request(app)
+        .post(`${URL}/signin`)
+        .send(wrongUserAuthPassword)
+        .expect(401)
+        .end((err, res) => {
+          expect(res.body).to.have.property('status').equal(401);
+          expect(res.body.message).to.equal('Email or password is incorrect');
           if (err) return done(err);
           done();
         });

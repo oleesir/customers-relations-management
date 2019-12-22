@@ -76,6 +76,10 @@ const wrongUserAuthEmail = {
   ...authUser, email: 'linker@gmail.com', password: 'helloworldtwo'
 };
 
+const wrongUserAuthPassword = {
+  ...authUser, email: 'nneka@gmail.com', password: 'helloworldtwoo'
+};
+
 const wrongEmailAuthUser = {
   ...authUser, email: 'nnekagmail.com', password: 'helloworldtwo'
 };
@@ -115,7 +119,7 @@ const newCustomer = {
   firstName: 'ben',
   lastName: 'chichi',
   email: 'chiben@gmail.com',
-  phoneNumber: '2341267890542',
+  phoneNumber: '+2341267890542',
   address: 'number 50 townsend'
 };
 
@@ -160,14 +164,28 @@ const updateCustomer = {
   firstName: 'zika',
   lastName: 'chuchu',
   email: 'zikachu@gmail.com',
-  // phoneNumber: '',
+  phoneNumber: '+23464578893554',
   address: 'number 59 griffin'
+};
+
+const emptyUpdatedCustomer = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  phoneNumber: '',
+  address: ''
 };
 
 const newEmail = {
   emails: ['uwembleble@gmail.com', 'pelelaki@gmail.com'],
   subject: 'hello worldy',
   message: 'Am running a good test',
+  deliveryDate: todaysDate
+};
+
+const newSms = {
+  phoneNumbers: ['+2348155361655'],
+  message: 'testing zone',
   deliveryDate: todaysDate
 };
 
@@ -237,6 +255,7 @@ export default {
   invalidPasswordLength,
   existingEmail,
   authUser,
+  wrongUserAuthPassword,
   emptyAuthUser,
   emptyEmailAuthUser,
   emptyPasswordAuthUser,
@@ -269,5 +288,7 @@ export default {
   emptyMessageField,
   emptyDeliveryDateField,
   wrongEmailField,
-  newAutoEmail
+  newAutoEmail,
+  emptyUpdatedCustomer,
+  newSms
 };

@@ -2,16 +2,19 @@ export const dropTables = `
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS customers CASCADE;
 DROP TABLE IF EXISTS notifications CASCADE;
+DROP TABLE IF EXISTS sms_notifications CASCADE;
 `;
 
 export const dropTypes = `
 DROP TYPE IF EXISTS CUSTOMERS_STATUS;
 DROP TYPE IF EXISTS NOTIFICATIONS_STATUS;
+DROP TYPE IF EXISTS SMS_NOTIFICATIONS_STATUS;
 `;
 
 export const createTypes = `
 CREATE TYPE CUSTOMERS_STATUS AS ENUM ('active','inactive');
 CREATE TYPE NOTIFICATIONS_STATUS AS ENUM ('delivered','undelivered');
+CREATE TYPE SMS_NOTIFICATIONS_STATUS AS ENUM ('delivered','undelivered');
 `;
 
 export const createTables = `
@@ -50,6 +53,17 @@ CREATE TABLE IF NOT EXISTS notifications(
           FOREIGN KEY(staff_id) REFERENCES users(id) ON DELETE CASCADE,
           created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
           updated_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);
+
+CREATE TABLE IF NOT EXISTS sms_notifications(
+            id SERIAL PRIMARY KEY,
+            staff_id INT NOT NULL,
+            message VARCHAR NOT NULL,
+            phone_number VARCHAR ARRAY NOT NULL,
+            status SMS_NOTIFICATIONS_STATUS NOT NULL DEFAULT 'undelivered',
+            delivery_date TIMESTAMP NOT NULL DEFAULT CURRENT_DATE,
+            FOREIGN KEY(staff_id) REFERENCES users(id) ON DELETE CASCADE,
+            created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);
 `;
 
 

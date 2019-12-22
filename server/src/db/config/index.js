@@ -2,7 +2,9 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const {DB_USER, DB_HOST,DB_NAME,DB_NAME_TEST,DB_PASSWORD,DATABASE_URL,NODE_ENV,DB_PORT} = process.env;
+const {
+  DB_USER, DB_HOST, DB_NAME, DB_NAME_TEST, DB_PASSWORD, DATABASE_URL, NODE_ENV, DB_PORT
+} = process.env;
 
 export default () => {
   if (NODE_ENV === 'production') {
@@ -19,5 +21,7 @@ export default () => {
     });
   }
 
-  return ({ user: DB_USER,host: DB_HOST, password: DB_PASSWORD,database: DB_NAME, port: DB_PORT });
+  return ({
+    user: DB_USER, host: DB_HOST, password: DB_PASSWORD, database: DB_NAME, port: DB_PORT
+  });
 };
